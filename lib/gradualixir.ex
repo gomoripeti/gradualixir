@@ -65,7 +65,11 @@ defmodule Gradualixir do
 
   defp safe_type_check_file(file, opts) do
     try do
-      :gradualizer.type_check_file(file, [{:print_file, true}, {:specs_override, 'priv/prelude'} | opts])
+      :gradualizer.type_check_file(file, [
+        {:print_file, true},
+        {:specs_override, 'priv/prelude'},
+        {:fmt_type_fun, &Gradualixir.Formatter.pp_type/1} | opts
+      ])
     rescue
       e in _ ->
         {e, stack} = Exception.blame(:error, e, __STACKTRACE__)
